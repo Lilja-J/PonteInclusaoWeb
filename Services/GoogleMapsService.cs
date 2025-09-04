@@ -19,9 +19,9 @@ public class GoogleMapsService : IMapService
 
     public GoogleMapsService(IConfiguration configuration, HttpClient httpClient)
     {
-        _apiKey = configuration["GoogleMapsApiKey"]!;
+        _apiKey = Environment.GetEnvironmentVariable("GOOGLE_MAPS_API_KEY")!;
         if (string.IsNullOrEmpty(_apiKey))
-            throw new InvalidOperationException("API Key do Google Maps não configurada em appsettings.json.");
+            throw new InvalidOperationException("API Key do Google Maps não configurada na variável de ambiente GOOGLE_MAPS_API_KEY.");
         _httpClient = httpClient;
     }
 
