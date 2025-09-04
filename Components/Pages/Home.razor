@@ -1,0 +1,100 @@
+﻿@page "/"
+@rendermode InteractiveServer
+@using PonteInclusaoWeb.Models
+@using PonteInclusaoWeb.Services
+@inject IMapService MapService
+@inject ILogger<Home> Logger
+
+<header class="header">
+    <div class="logo-container">
+        <img src="/images/PonteInclusaoLogo.svg" alt="Logo Ponte Inclusão" />
+    </div>
+    <div class="header-content">
+        <h1 class="header-title">Ponte Inclusão</h1>
+        <p class="header-subtitle">Encontre a escola ideal para suas necessidades</p>
+    </div>
+</header>
+
+<div class="container">
+    <div class="card">
+        <input class="form-input" placeholder="Digite sua cidade" @bind="searchCity" />
+
+        <select class="form-select" @bind="selectedDisability">
+            <option value="">Selecione o tipo de suporte</option>
+            <option value="Autismo (TEA)">Autismo (TEA)</option>
+            <option value="Surdez">Surdez</option>
+            <option value="Baixa Visão">Baixa Visão</option>
+            <option value="Cadeirante">Cadeirante</option>
+        </select>
+
+        <button class="btn-primary" @onclick="SearchAsync" disabled="@isBusy">
+            @if (isBusy) { <span>Buscando...</span> } else { <span>Buscar Escolas</span> }
+        </button>
+    </div>  
+
+    @if (hasSearched)
+    {
+        <div style="margin-top: 2rem;">
+            <h4>Resultados Encontrados (@places.Count)</h4>
+
+            @if (places.Count == 0)
+            {
+                <div class="card" style="margin-top: 1rem; text-align: center; color: var(--text-medium);">Nenhuma escola encontrada.</div>
+            }
+            else
+            {
+                @foreach (var place in places)
+                {
+                    <div class="card result-card">
+                        <h5>@place.Name</h5>
+                        <p>@place.Address</p>
+                        <p class="rating">★ @place.Rating.ToString("F1")</p>
+                    </div>
+                }
+            }
+        </div>
+    }
+</div>
+
+@code {
+#nullable enable
+
+    // A CORREÇÃO PRINCIPAL ESTÁ AQUI:
+    // Inicializamos a variável com string.Empty para ser consistente
+    // com a primeira opção do <select> que tem value="".
+    private string selectedDisability = string.Empty;
+    private string searchCity = string.Empty;
+
+    private bool isBusy = false;
+    private bool hasSearched = false;
+    private List<Place> places = new();
+
+    private async Task SearchAsync()
+    {
+        Logger.LogInformation($"Botão clicado! Cidade: '{searchCity}', Suporte: '{selectedDisability}'");
+
+        if (isBusy || string.IsNullOrWhiteSpace(searchCity) || string.IsNullOrWhiteSpace(selectedDisability))
+        {
+            Logger.LogWarning("Busca abortada. Campos não preenchidos.");
+            return;
+        }
+
+        isBusy = true;
+        hasSearched = false;
+        places.Clear();
+        await InvokeAsync(StateHasChanged);
+
+        try
+        {
+            places = await MapService.SearchSchoolsAsync(searchCity, selectedDisability);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Ocorreu um erro ao chamar o serviço de busca.");
+        }
+
+        isBusy = false;
+        hasSearched = true;
+        await InvokeAsync(StateHasChanged);
+    }
+}
