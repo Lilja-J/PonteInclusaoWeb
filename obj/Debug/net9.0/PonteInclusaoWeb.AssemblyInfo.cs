@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PonteInclusaoWeb")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+65b8473d712a626179583eee985ff544dd83a9c1")]
 [assembly: System.Reflection.AssemblyProductAttribute("PonteInclusaoWeb")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PonteInclusaoWeb")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

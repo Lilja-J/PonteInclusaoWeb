@@ -1,12 +1,27 @@
 {
   "version": 2,
-  "dgSpecHash": "WzyZQISXF6U=",
+  "dgSpecHash": "hiiE/RACLy0=",
   "success": true,
   "projectFilePath": "C:\\Users\\Samsung\\Documents\\estud.MAUI\\PonteInclusaoWeb\\PonteInclusaoWeb.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Samsung\\.nuget\\packages\\communitytoolkit.maui\\9.0.0\\communitytoolkit.maui.9.0.0.nupkg.sha512",
     "C:\\Users\\Samsung\\.nuget\\packages\\communitytoolkit.maui.core\\9.0.0\\communitytoolkit.maui.core.9.0.0.nupkg.sha512",
     "C:\\Users\\Samsung\\.nuget\\packages\\communitytoolkit.mvvm\\8.2.2\\communitytoolkit.mvvm.8.2.2.nupkg.sha512",
+    "C:\\Users\\Samsung\\.nuget\\packages\\google.api.commonprotos\\2.17.0\\google.api.commonprotos.2.17.0.nupkg.sha512",
+    "C:\\Users\\Samsung\\.nuget\\packages\\google.api.gax\\4.11.0\\google.api.gax.4.11.0.nupkg.sha512",
+    "C:\\Users\\Samsung\\.nuget\\packages\\google.api.gax.grpc\\4.11.0\\google.api.gax.grpc.4.11.0.nupkg.sha512",
+    "C:\\Users\\Samsung\\.nuget\\packages\\google.apis\\1.69.0\\google.apis.1.69.0.nupkg.sha512",
+    "C:\\Users\\Samsung\\.nuget\\packages\\google.apis.auth\\1.69.0\\google.apis.auth.1.69.0.nupkg.sha512",
+    "C:\\Users\\Samsung\\.nuget\\packages\\google.apis.core\\1.69.0\\google.apis.core.1.69.0.nupkg.sha512",
+    "C:\\Users\\Samsung\\.nuget\\packages\\google.cloud.iam.v1\\3.2.0\\google.cloud.iam.v1.3.2.0.nupkg.sha512",
+    "C:\\Users\\Samsung\\.nuget\\packages\\google.cloud.location\\2.2.0\\google.cloud.location.2.2.0.nupkg.sha512",
+    "C:\\Users\\Samsung\\.nuget\\packages\\google.cloud.secretmanager.v1\\2.6.0\\google.cloud.secretmanager.v1.2.6.0.nupkg.sha512",
+    "C:\\Users\\Samsung\\.nuget\\packages\\google.protobuf\\3.31.1\\google.protobuf.3.31.1.nupkg.sha512",
+    "C:\\Users\\Samsung\\.nuget\\packages\\grpc.auth\\2.71.0\\grpc.auth.2.71.0.nupkg.sha512",
+    "C:\\Users\\Samsung\\.nuget\\packages\\grpc.core.api\\2.71.0\\grpc.core.api.2.71.0.nupkg.sha512",
+    "C:\\Users\\Samsung\\.nuget\\packages\\grpc.net.client\\2.71.0\\grpc.net.client.2.71.0.nupkg.sha512",
+    "C:\\Users\\Samsung\\.nuget\\packages\\grpc.net.common\\2.71.0\\grpc.net.common.2.71.0.nupkg.sha512",
+    "C:\\Users\\Samsung\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",
     "C:\\Users\\Samsung\\.nuget\\packages\\microsoft.extensions.configuration\\8.0.0\\microsoft.extensions.configuration.8.0.0.nupkg.sha512",
     "C:\\Users\\Samsung\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\8.0.0\\microsoft.extensions.configuration.abstractions.8.0.0.nupkg.sha512",
     "C:\\Users\\Samsung\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\9.0.0\\microsoft.extensions.dependencyinjection.9.0.0.nupkg.sha512",
@@ -24,7 +39,11 @@
     "C:\\Users\\Samsung\\.nuget\\packages\\microsoft.maui.core\\8.0.14\\microsoft.maui.core.8.0.14.nupkg.sha512",
     "C:\\Users\\Samsung\\.nuget\\packages\\microsoft.maui.essentials\\8.0.14\\microsoft.maui.essentials.8.0.14.nupkg.sha512",
     "C:\\Users\\Samsung\\.nuget\\packages\\microsoft.maui.graphics\\8.0.14\\microsoft.maui.graphics.8.0.14.nupkg.sha512",
-    "C:\\Users\\Samsung\\.nuget\\packages\\microsoft.maui.resizetizer\\8.0.14\\microsoft.maui.resizetizer.8.0.14.nupkg.sha512"
+    "C:\\Users\\Samsung\\.nuget\\packages\\microsoft.maui.resizetizer\\8.0.14\\microsoft.maui.resizetizer.8.0.14.nupkg.sha512",
+    "C:\\Users\\Samsung\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\Samsung\\.nuget\\packages\\system.codedom\\7.0.0\\system.codedom.7.0.0.nupkg.sha512",
+    "C:\\Users\\Samsung\\.nuget\\packages\\system.diagnostics.diagnosticsource\\6.0.2\\system.diagnostics.diagnosticsource.6.0.2.nupkg.sha512",
+    "C:\\Users\\Samsung\\.nuget\\packages\\system.management\\7.0.2\\system.management.7.0.2.nupkg.sha512"
   ],
   "logs": []
 }

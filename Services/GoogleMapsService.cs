@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Configuration;
-using PonteInclusaoWeb.Models; // Note o namespace correto
+using PonteInclusaoWeb.Models;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
@@ -7,34 +7,51 @@ using System.Threading.Tasks;
 using System.Web;
 using System;
 using System.Diagnostics;
+using System.Linq;
 
-namespace PonteInclusaoWeb.Services; // Note o namespace correto
+namespace PonteInclusaoWeb.Services;
 
 public class GoogleMapsService : IMapService
 {
-    private readonly HttpClient _httpClient;
-    private readonly string _apiKey;
-    // A VARIÁVEL QUE FALTAVA ESTÁ AQUI:
+    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly IConfiguration _configuration;
     private const string BaseUrl = "https://maps.googleapis.com/maps/api/place/textsearch/json";
 
-    public GoogleMapsService(IConfiguration configuration, HttpClient httpClient)
+    public GoogleMapsService(IConfiguration configuration, IHttpClientFactory httpClientFactory)
     {
-        _apiKey = Environment.GetEnvironmentVariable("GOOGLE_MAPS_API_KEY")!;
-        if (string.IsNullOrEmpty(_apiKey))
-            throw new InvalidOperationException("API Key do Google Maps não configurada na variável de ambiente GOOGLE_MAPS_API_KEY.");
-        _httpClient = httpClient;
+        _configuration = configuration;
+        _httpClientFactory = httpClientFactory;
     }
 
     public async Task<List<Place>> SearchSchoolsAsync(string city, string disabilityType)
     {
+        string fields = "place_id,name,formatted_address,geometry,rating,formatted_phone_number,website,url";
+        string searchQuery = $"escolas com suporte para {disabilityType} em {city}";
+        return await ProcessSearchRequest(searchQuery, fields);
+    }
+
+    public async Task<Place?> SearchCityHallAsync(string city)
+    {
+        string fields = "place_id,name,formatted_address,geometry,formatted_phone_number,website,url";
+        string searchQuery = $"secretaria de educação de {city}";
+        var results = await ProcessSearchRequest(searchQuery, fields);
+        return results.FirstOrDefault();
+    }
+
+    private async Task<List<Place>> ProcessSearchRequest(string searchQuery, string fields)
+    {
+        // A CHAVE DA API É LIDA DO User Secrets AQUI, E SÓ AQUI.
+        var apiKey = _configuration["GoogleMaps:ApiKey"];
+        if (string.IsNullOrEmpty(apiKey) || apiKey.Contains("SUA_CHAVE"))
+            throw new InvalidOperationException("A chave da API do Google Maps não está configurada corretamente.");
+
         try
         {
-            string searchQuery = $"escolas com suporte para {disabilityType} em {city}";
             string encodedQuery = HttpUtility.UrlEncode(searchQuery);
-            string requestUrl = $"{BaseUrl}?query={encodedQuery}&key={_apiKey}&language=pt-BR";
+            string requestUrl = $"{BaseUrl}?query={encodedQuery}&fields={fields}&key={apiKey}&language=pt-BR";
 
-            var response = await _httpClient.GetAsync(requestUrl);
-
+            var httpClient = _httpClientFactory.CreateClient();
+            var response = await httpClient.GetAsync(requestUrl);
             if (!response.IsSuccessStatusCode) return new List<Place>();
 
             var jsonResponse = await response.Content.ReadAsStringAsync();
@@ -45,10 +62,6 @@ public class GoogleMapsService : IMapService
             {
                 foreach (var result in googleResponse.Results)
                 {
-                    string name = result.Name.ToLower();
-                    if (name.Contains("universidade") || name.Contains("faculdade"))
-                        continue;
-
                     var place = new Place
                     {
                         Name = result.Name,
@@ -57,12 +70,9 @@ public class GoogleMapsService : IMapService
                             result.Geometry?.Location?.Lat ?? 0.0,
                             result.Geometry?.Location?.Lng ?? 0.0
                         ),
-                        Rating = result.Rating ?? 0.0,
-                        IsPermanentlyClosed = result.BusinessStatus == "CLOSED_PERMANENTLY"
+                        Rating = result.Rating ?? 0.0
                     };
-
-                    if (!place.IsPermanentlyClosed)
-                        places.Add(place);
+                    places.Add(place);
                 }
             }
             return places;
