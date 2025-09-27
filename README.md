@@ -20,6 +20,8 @@
 
 A plataforma permite que usuários pesquisem por cidade e por tipo de necessidade específica, retornando uma lista de locais relevantes com informações básicas, e facilitando o primeiro contato.
 
+Algumas featuraes podem estar ausentes por questões da interação do app com as API's externas.
+
 ### 🎯 Contexto Acadêmico
 
 Este projeto foi desenvolvido como requisito para a **Atividade Extensionista II** do curso de **Engenharia de Software**. O trabalho está alinhado ao tema **"Ferramenta de Apoio à Inclusão e Acessibilidade"**, buscando aplicar os conceitos da engenharia de software na criação de uma solução com impacto social positivo, que visa diminuir barreiras e promover a inclusão no ambiente educacional.
