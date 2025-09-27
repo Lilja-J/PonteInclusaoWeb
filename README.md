@@ -33,7 +33,6 @@ Este projeto foi desenvolvido como requisito para a **Atividade Extensionista II
 * **Busca Inteligente:** Pesquisa de instituições por cidade e tipo de suporte necessário (ex: Autismo, Surdez, Acessibilidade para Cadeirantes).
 * **Listagem de Resultados:** Exibição clara dos locais encontrados, com nome, endereço e avaliação.
 * **Integração com Google Maps:** Cada resultado é um link direto para a localização no Google Maps.
-* **Segurança de Dados:** A chave da API do Google Maps é gerenciada de forma segura, nunca sendo exposta ao cliente ou ao repositório de código.
 * **Plano B Inteligente:** Caso nenhuma escola seja encontrada, o sistema sugere o contato do órgão de educação da cidade pesquisada como um caminho alternativo.
 
 ---
