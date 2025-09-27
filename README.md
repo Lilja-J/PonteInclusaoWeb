@@ -76,7 +76,7 @@ Para rodar o projeto em sua máquina local, siga os passos abaixo.
 
 1.  **Clone o repositório:**
     ```bash
-    git clone [link de clonagem](link de clonagem) 
+    git clone [https://github.com/Lilja-J/PonteInclusaoWeb.git](https://github.com/Lilja-J/PonteInclusaoWeb.git)
     ```
 
 2.  **Configure a Chave da API (Passo Crucial de Segurança):**
