@@ -135,4 +135,4 @@ Para rodar o projeto em sua máquina local, siga os passos abaixo.
 
 ##  Contato
 
-**Jean Vitor Lilja** - [www.linkedin.com/in/jean-lilja]
+**Jean Vitor Lilja** - [LinkedIn](www.linkedin.com/in/jean-lilja)
