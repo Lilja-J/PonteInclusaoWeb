@@ -1,0 +1,170 @@
+@page "/"
+@rendermode InteractiveServer
+@implements IDisposable
+@using System.Threading
+@using PonteInclusaoWeb.Common
+@using PonteInclusaoWeb.Models
+@using PonteInclusaoWeb.Services
+@inject IMapService MapService
+@inject ILogger<Home> Logger
+
+<header class="header">
+    <div class="logo-container">
+        <img src="/images/PonteInclusaoLogo.svg" alt="Logo Ponte Inclusão" width="36" height="36" />
+    </div>
+    <div class="header-content">
+        <h1 class="header-title">Ponte Inclusão</h1>
+        <p class="header-subtitle">Encontre a escola ideal para suas necessidades</p>
+    </div>
+</header>
+
+<main class="container">
+    <div class="card">
+        <label for="city-input" class="visually-hidden" style="display:none;">Cidade</label>
+        <input id="city-input"
+               class="form-input"
+               placeholder="Digite sua cidade"
+               aria-label="Digite sua cidade"
+               maxlength="100"
+               @bind="searchCity"
+               @bind:event="oninput"
+               @onkeyup="HandleKeyUp" />
+
+        <label for="support-select" class="visually-hidden" style="display:none;">Tipo de Suporte</label>
+        <select id="support-select"
+                class="form-select"
+                aria-label="Selecione o tipo de suporte"
+                @bind="selectedDisability">
+            <option value="">Selecione o tipo de suporte</option>
+            <option value="Autismo (TEA)">Autismo (TEA)</option>
+            <option value="Surdez">Surdez</option>
+            <option value="Baixa Visão">Baixa Visão</option>
+            <option value="Cadeirante">Cadeirante</option>
+        </select>
+
+        @if (!string.IsNullOrEmpty(validationError))
+        {
+            <div style="color: #dc2626; font-size: 0.9rem; margin-bottom: 1rem;" role="alert">
+                @validationError
+            </div>
+        }
+
+        <button class="btn-primary" @onclick="SearchAsync" disabled="@isBusy">
+            @if (isBusy)
+            {
+                <span>Buscando...</span>
+            }
+            else
+            {
+                <span>Buscar Escolas</span>
+            }
+        </button>
+    </div>  
+
+    @if (hasSearched)
+    {
+        <div style="margin-top: 2rem;">
+            <h4>Resultados Encontrados (@places.Count)</h4>
+
+            @if (places.Count == 0)
+            {
+                <div class="card" style="margin-top: 1rem; text-align: center; color: var(--text-medium);">
+                    Nenhuma instituição com o suporte especificado foi encontrada nesta localidade.
+                </div>
+            }
+            else
+            {
+                @foreach (var place in places)
+                {
+                    <div class="card result-card">
+                        <h5>@place.Name</h5>
+                        <p class="address">@place.Address</p>
+                        @if (place.Rating > 0)
+                        {
+                            <p class="rating">★ @place.Rating.ToString("F1")</p>
+                        }
+                    </div>
+                }
+            }
+        </div>
+    }
+</main>
+
+@code {
+    private string selectedDisability = string.Empty;
+    private string searchCity = string.Empty;
+    private string validationError = string.Empty;
+
+    private bool isBusy = false;
+    private bool hasSearched = false;
+    private List<Place> places = new();
+    private CancellationTokenSource? _cts;
+
+    private async Task HandleKeyUp(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter" && !isBusy)
+        {
+            await SearchAsync();
+        }
+    }
+
+    private async Task SearchAsync()
+    {
+        validationError = string.Empty;
+
+        // OWASP A03: Validação no cliente/servidor de entradas de busca
+        if (string.IsNullOrWhiteSpace(searchCity))
+        {
+            validationError = "Por favor, digite o nome da cidade.";
+            return;
+        }
+
+        if (!SecurityValidator.TrySanitizeCity(searchCity, out var safeCity))
+        {
+            validationError = "Nome de cidade inválido. Use apenas letras, acentos e números.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(selectedDisability) ||
+            !SecurityValidator.TrySanitizeDisability(selectedDisability, out var safeDisability))
+        {
+            validationError = "Por favor, selecione uma opção válida de suporte.";
+            return;
+        }
+
+        _cts?.Cancel();
+        _cts?.Dispose();
+        _cts = new CancellationTokenSource();
+
+        isBusy = true;
+        hasSearched = false;
+        places.Clear();
+        await InvokeAsync(StateHasChanged);
+
+        try
+        {
+            places = await MapService.SearchSchoolsAsync(safeCity, safeDisability, _cts.Token);
+            hasSearched = true;
+        }
+        catch (OperationCanceledException)
+        {
+            // Busca cancelada por nova requisição do usuário
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Falha ao executar busca de escolas.");
+            validationError = "Ocorreu um erro ao consultar as escolas. Tente novamente mais tarde.";
+        }
+        finally
+        {
+            isBusy = false;
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    public void Dispose()
+    {
+        _cts?.Cancel();
+        _cts?.Dispose();
+    }
+}

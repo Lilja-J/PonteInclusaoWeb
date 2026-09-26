@@ -1,0 +1,40 @@
+# Build and Dependency Directories
+bin/
+obj/
+publish/
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio / VS Code / JetBrains Rider
+.vs/
+.vscode/
+.idea/
+*.user
+*.userosscache
+*.suo
+*.userprefs
+*.dbmdl
+*.jfm
+*.pfx
+*.publishsettings
+
+# User Secrets & Environment Configurations
+secrets.json
+.env
+.env.*
+appsettings.Production.json
+appsettings.*.local.json
+appsettings.local.json
+
+# Cloud & Deployment Configs
+.azure/
+
+# Logs & Diagnostics
+*.log
+*.pcap
+_diagnostic/
+
+# OS Generated
+.DS_Store
+Thumbs.db
+ehthumbs.db

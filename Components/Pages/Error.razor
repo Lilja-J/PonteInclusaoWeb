@@ -1,0 +1,37 @@
+@page "/Error"
+@using System.Diagnostics
+
+<PageTitle>Erro - Ponte Inclusão</PageTitle>
+
+<div class="container" style="text-align: center; margin-top: 3rem;">
+    <div class="card">
+        <h2 style="color: var(--primary-purple); margin-bottom: 1rem;">Ops! Algo deu errado.</h2>
+        <p style="color: var(--text-medium); margin-bottom: 1.5rem;">
+            Ocorreu uma falha ao processar sua solicitação. Por favor, tente novamente em alguns instantes.
+        </p>
+
+        @if (ShowRequestId)
+        {
+            <p style="font-size: 0.85rem; color: var(--text-medium);">
+                Código de referência: <code>@RequestId</code>
+            </p>
+        }
+
+        <div style="margin-top: 1.5rem;">
+            <a href="/" class="btn-primary" style="display: inline-block; text-decoration: none; padding: 0.75rem 1.5rem;">
+                Voltar ao Início
+            </a>
+        </div>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter]
+    private HttpContext? HttpContext { get; set; }
+
+    private string? RequestId { get; set; }
+    private bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+
+    protected override void OnInitialized() =>
+        RequestId = Activity.Current?.Id ?? HttpContext?.TraceIdentifier;
+}
